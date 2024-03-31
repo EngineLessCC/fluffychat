@@ -33,10 +33,14 @@ jobs:
           FLUFFYCHAT_NEW_TEAM: 'none'
           FLUFFYCHAT_NEW_GROUP: 'uwu.vivy.fluffychat'
         run: ./scripts/release-ios-testflight.sh
-      - name: Create zip
-        run: zip -r fluffychat.zip build/ios/iphoneos/Runner.app
-      - name: Archive .zip file
+      - name: Create unsigned ipa
+        run: |
+          mkdir -p build/ipa/Payload/fluffychat.app
+          cp -a build/ios/iphoneos/Runner.app/* build/ipa/Payload/fluffychat.app
+          cd build/ipa/
+          zip -r fluffychat.ipa Payload
+      - name: Archive ipa file
         uses: actions/upload-artifact@v3
         with:
           name: fluffychat.zip
-          path: fluffychat.zip
+          path: build/ipa/fluffychat.ipa
